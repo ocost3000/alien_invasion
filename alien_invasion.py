@@ -20,7 +20,7 @@ def run_game():
 
     # Make a group of aliens.
     aliens = Group()
-    gf.create_fleet(ai_settings, screen, aliens)
+    gf.create_fleet(ai_settings, screen, ship, aliens)
 
     # Make a group to store bullets in.
     bullets = Group()
