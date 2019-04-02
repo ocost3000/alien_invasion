@@ -31,10 +31,12 @@ def run_game():
         gf.check_events(ai_settings, screen, ship, bullets)
         # Update the ship position.
         ship.update()
+        # Update any bullet-alien collisions
+        gf.check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets)
         # Update the bullets on screen.
-        gf.update_bullets(aliens, bullets)
+        gf.update_bullets(ai_settings, screen, ship, aliens, bullets)
         # Update the aliens on screen.
-        gf.update_aliens(ai_settings, aliens)
+        gf.update_aliens(ai_settings, ship, aliens)
         # Update the screen
         gf.update_screen(ai_settings, screen, ship, aliens, bullets)
 
