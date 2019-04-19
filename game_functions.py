@@ -112,7 +112,7 @@ def check_play_button(ai_settings, screen, stats, play_button, ship, aliens,
     if button_clicked and not stats.game_active:
         start_game(ai_settings, screen, stats, ship, aliens, bullets)
 
-def update_bullets(ai_settings, screen, ship, aliens, bullets):
+def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
     """Update position of bullets and get rid of old bullets"""
     # Update bullet positions.
     bullets.update()
@@ -120,6 +120,9 @@ def update_bullets(ai_settings, screen, ship, aliens, bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
+    
+    check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, 
+        aliens, bullets)
 
 def check_fleet_edges(ai_settings, aliens):
     """Respond appropriately if any aliens have reached an edge."""
@@ -134,11 +137,17 @@ def change_fleet_direction(ai_settings, aliens):
         alien.rect.y += ai_settings.fleet_drop_speed
     ai_settings.fleet_direction *= -1
 
-def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
+def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, 
+                aliens, bullets):
     """Respond to bullet-alien collisions."""
     # Remove any bullets and aliens that have collided.
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
         # Test Game by setting (False, True)
+    # Add points for hitting an alien.
+    if collisions:
+        for aliens in collisions.values():
+            stats.score += ai_settings.alien_points * len(aliens)
+            sb.prep_score()
 
     # Check if entire fleet is destroyed.
     if len(aliens) == 0:
