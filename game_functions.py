@@ -112,6 +112,12 @@ def check_play_button(ai_settings, screen, stats, play_button, ship, aliens,
     if button_clicked and not stats.game_active:
         start_game(ai_settings, screen, stats, ship, aliens, bullets)
 
+def check_high_score(stats, sb):
+    """Check to see if there's a new high score."""
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        sb.prep_high_score()
+
 def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
     """Update position of bullets and get rid of old bullets"""
     # Update bullet positions.
@@ -148,6 +154,7 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship,
         for aliens in collisions.values():
             stats.score += ai_settings.alien_points * len(aliens)
             sb.prep_score()
+        check_high_score(stats, sb)
 
     # Check if entire fleet is destroyed.
     if len(aliens) == 0:
