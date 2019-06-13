@@ -23,7 +23,7 @@ def run_game():
     
     # Create an instance to store game statistics.
     stats = GameStats(ai_settings)
-    sb = Scoreboard(ai_settings, screen, stats)
+    sb = Scoreboard(ai_settings, stats, screen)
 
     # Make a ship.
     ship = Ship(ai_settings, screen)
@@ -38,20 +38,20 @@ def run_game():
     # Start the main loop for the game.
     while True:
         # Watch for keyboard and mouse events.
-        gf.check_events(ai_settings, screen, stats, sb, play_button, ship,
+        gf.check_events(ai_settings, stats, screen, sb, play_button, ship,
                 aliens, bullets)
 
         if stats.game_active:
             # Update the ship position.
             ship.update()
             # Update any bullet-alien collisions
-            gf.check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets)
+            gf.check_bullet_alien_collisions(ai_settings, stats, screen, sb, ship, aliens, bullets)
             # Update the bullets on screen.
-            gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets)
+            gf.update_bullets(ai_settings, stats, screen, sb, ship, aliens, bullets)
             # Update the aliens on screen.
-            gf.update_aliens(ai_settings, stats, screen, ship, aliens, bullets)
+            gf.update_aliens(ai_settings, stats, screen, sb, ship, aliens, bullets)
 
         # Update the screen
-        gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button)
+        gf.update_screen(ai_settings, stats, screen, sb, ship, aliens, bullets, play_button)
 
 run_game()
